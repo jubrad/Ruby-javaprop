@@ -8,10 +8,10 @@ prop=JavaProp.new 'file_name.properties'
 ###access by partial key ex:
 ```    
 prop.get('test')
-{'test.1'=>'first_test','test.2'=>'second_test'}
+=>{'test.1'=>'first_test','test.2'=>'second_test'}
     
 prop.get('test').to_s
-test.1=first_test\ntest.2=second_test"
+=>"test.1=first_test\ntest.2=second_test"
 ```    
 ###save to file
 ```    
