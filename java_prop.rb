@@ -49,6 +49,7 @@ class JavaProp
             end
             out
         end
+       #modifies to string to be more applicable for .properties file
         def to_s
             string_out=''
                 if self.size >1
@@ -58,9 +59,26 @@ class JavaProp
                 end
             return string_out
         end
-    end
-    
 
+        def swap_key find, rep
+            i=self.keys.index find
+            split=self.split i
+            split[0][rep]=split[1].delete(find)
+            self.replace(split[0].merge(split[1]))
+        end
+
+        def split arg
+            h1=JHash.new
+            h2=JHash.new
+            self.keys[0...arg].each { |key|
+                h1[key]=self[key]
+                }
+            self.keys[arg..self.size].each { |key|
+                h2[key]=self[key]
+                }
+            return [h1,h2]
+        end
+    end
  
 end
 
