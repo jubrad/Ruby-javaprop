@@ -7,7 +7,7 @@ class JavaProp
     @properties = JHash.new 
     IO.foreach(file) do |line|
       if !line.strip.start_with? '#'
-      @properties[$1.strip] = $2 if line =~ /([^=]*)=(.*)\/\/(.*)/ || line =~ /([^=]*)=(.*)/ 
+      @properties[$1.strip] = $2 if line =~ /([^=]*)=(.*)[\/]*(.*)/ || line =~ /([^=]*)=(.*)/ 
       end
     end
   end
@@ -24,12 +24,21 @@ class JavaProp
     @properties[key] = value
   end
 
-  #Save the properties back to file  
-  def save!
-    file = File.new(@file,"w+")
-    file.puts self.to_s
-    file.close
+  #Save the properties back to file  (not idempotent)
+  def save! new_dir=@file
+    begin
+      @file="#{new_dir}"
+      file = File.new(@file,"w+")
+        @properties.each { |key,value| 
+          file.write "#{key}=#{value}\n" 
+         }
+      
+    rescue
+        raise 'cannot save file'
+    end
   end
+
+
 
   def get arg
     self.properties.get arg
@@ -81,4 +90,3 @@ class JavaProp
     end
  
 end
-
